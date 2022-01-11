@@ -1,55 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset=UTF-8 />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-  </head>
-  <body>
-    <script src="https://www.ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js"></script>
+<head>
+    <title>three.js webgl - hello three.js</title>
+    <meta charset="utf-8">
+    <style>
+    body {
+        background-color: #ffffff;
+        margin: 0;
+        overflow: hidden;
+    }
+    </style>
+    <script src="../FullThree//node_modules/three/build/three.min.js"></script>
     <script>
-      var camera, scene, renderer;
-      var geometry, material, mesh;
-      var clock;
+    var camera, scene, renderer;
+    var geometry, material, mesh;
+    var clock;
+    var dir=1;
 
-      function init(){
-        renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight)
-        document.body.appendChild(renderer.domElement);
+        function init() {
+            renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0xffffff,1);
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
 
-        scene = new THREE.Scene();
-        geometry = new THREE.CubeGeometry(1,1,1);
-        material = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
+            scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 100);
-        camera.position.set(0,0,-3);
-        camera.lookAt(mesh.position);
+            geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true, wireframeLinewidth:10});
 
-        clock = new THREE.Clock();
-        window.addEventListener('resize', onWindowResize, false);
-      }
+            mesh = new THREE.Mesh( geometry, material );
+            
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100 );
+            camera.position.set (0,0,-3);
+            camera.lookAt(mesh.position);
 
-      var dir = 1;
-      function animate(){
-        requestAnimationFrame(animate);
-        var delta = clock.GetDelta();
+            scene.add( mesh );
+            
+            clock = new THREE.Clock();
+            window.addEventListener( 'resize', onWindowResize, false );
 
-        mesh.rotation.x += delta * 0.5;;
-        mesh.rotation.y += delta*2;
-        mesh.position.x += dir*delta;
-       
-        renderer.render(scene, camera);
-      }
+        }
 
-      function onWindowResize(){
-        windowHalfX = window.innerWidth/2;
-        windowHalfY = window.innerHeight/2;
-        camera.aspect = window.innerWidth/window.innerHeight;
-        camera.updateProjectionMatrix();
-        render,setSize(window.innerWidth, window.innerHeight);
-      }
-      init();
-      animate();
+        function animate() {
+            requestAnimationFrame( animate );
+            
+            var delta =  clock.getDelta();
+
+            mesh.rotation.x += delta * 0.5;
+            mesh.rotation.y += delta * 2;
+            
+            mesh.position.x += dir*delta;
+            if (mesh.position.x > 2) {
+                dir=-1;
+            } else if (mesh.position.x < - 2)  {
+                dir=1;
+            }
+            renderer.render( scene, camera );
+        }
+
+        function onWindowResize() {
+
+                windowHalfX = window.innerWidth / 2;
+                windowHalfY = window.innerHeight / 2;
+
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+
+                renderer.setSize( window.innerWidth, window.innerHeight );
+
+        }
+        
+        window.addEventListener("DOMContentLoaded", function(event) {
+            init();
+            animate();
+        });
+        
     </script>
-  </body>
+</head>
+<body>
+
+</body>
 </html>
