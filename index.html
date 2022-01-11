@@ -1,31 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"Full Three Dimensions"</title>
-</head>
-<body>
-    <style>
-        html{
-            box-sizing: border-box;
-            margin: 0px;
-            border: 0px;
-            padding: 0px;
-            position: absolute;
-            cursor: none;
-        }
+<html>
+  <head>
+    <meta charset=UTF-8 />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <script src="https://www.ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js"></script>
+    <script>
+      var camera, scene, renderer;
+      var geometry, material, mesh;
+      var clock;
 
-        *, *::before, *::after {
-            margin: 0px;
-            border: 0px;
-            padding: 0px;
-            position: absolute;
-            background-color: #880000ff;
-        }
-    </style>
-    
-    <script src= "fullthree.js"></script>
-</body>
+      function init(){
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild(renderer.domElement);
+
+        scene = new THREE.Scene();
+        geometry = new THREE.CubeGeometry(1,1,1);
+        material = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 100);
+        camera.position.set(0,0,-3);
+        camera.lookAt(mesh.position);
+
+        clock = new THREE.Clock();
+        window.addEventListener('resize', onWindowResize, false);
+      }
+
+      var dir = 1;
+      function animate(){
+        requestAnimationFrame(animate);
+        var delta = clock.GetDelta();
+
+        mesh.rotation.x += delta * 0.5;;
+        mesh.rotation.y += delta*2;
+        mesh.position.x += dir*delta;
+       
+        renderer.render(scene, camera);
+      }
+
+      function onWindowResize(){
+        windowHalfX = window.innerWidth/2;
+        windowHalfY = window.innerHeight/2;
+        camera.aspect = window.innerWidth/window.innerHeight;
+        camera.updateProjectionMatrix();
+        render,setSize(window.innerWidth, window.innerHeight);
+      }
+      init();
+      animate();
+    </script>
+  </body>
 </html>
