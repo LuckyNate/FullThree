@@ -25,14 +25,14 @@
 
             scene = new THREE.Scene();
 
-            geometry = new THREE.CylinderGeometry( 10000, 10000, 1000, window.innerWidth, 3);
+            geometry = new THREE.CylinderGeometry( 1000, 1000, 100, window.innerWidth, 3);
             loader = new THREE.TextureLoader();
             material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide, 
                 map: loader.load('https://t4.ftcdn.net/jpg/03/65/28/41/240_F_365284108_whFWpx0rZ9UuFkbCX9pms4WaUt1n9Hbw.jpg')});
             
             
             mesh = new THREE.Mesh( geometry, material );
-            camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 40000);
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 200000);
             camera.position.set (0,0,-25);
             camera.lookAt(mesh.position);
 
