@@ -28,7 +28,7 @@
             geometry = new THREE.CylinderGeometry( 1000, 1000, 100, window.innerWidth, 3);
             loader = new THREE.TextureLoader();
             material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide, 
-                map: loader.load('../FullThree//images/seascape.png')});
+                map: loader.load('https://raw.githubusercontent.com/LuckyNate/FullThree/0a74c5a6d2133b752e44538880b60baafef2cf37/images/seascape.png')});
             
             
             mesh = new THREE.Mesh( geometry, material );
