@@ -25,16 +25,17 @@
 
             scene = new THREE.Scene();
 
-            geometry = new THREE.CylinderGeometry( 1000, 1000, 100, window.innerWidth, 3);
+            geometry = new THREE.SphereGeometry( 1000, window.innerWidth, window.innerHeight);
             loader = new THREE.TextureLoader();
             material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide, 
                 map: loader.load('https://raw.githubusercontent.com/LuckyNate/FullThree/0a74c5a6d2133b752e44538880b60baafef2cf37/images/seascape.png')});
             
             
             mesh = new THREE.Mesh( geometry, material );
-            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 200000);
-            camera.position.set (0,0,-25);
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000);
+            
             camera.lookAt(mesh.position);
+            camera.position.set (0, -950, 0);
 
             scene.add( mesh );
             
@@ -48,7 +49,6 @@
             
             var delta =  clock.getDelta();
 
-            camera.rotation.x += delta * 0.0;
             camera.rotation.y += delta * 0.1;
             
             mesh.position.x += 0;
