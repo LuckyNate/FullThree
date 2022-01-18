@@ -12,10 +12,16 @@
     </style>
     <script src="../FullThree//node_modules/three/build/three.min.js"></script>
     <script>
+    
+    const k = 1000;
     var camera, scene, renderer;
-    var geometry, material, mesh, loader;
+    var geometry, material, loader;
     var clock;
     var dir=1;
+
+    //temp variable toggle for the camera tracking
+    var toggle = 1;
+
 
         function init() {
             renderer = new THREE.WebGLRenderer();
@@ -25,37 +31,44 @@
 
             scene = new THREE.Scene();
 
-            geometry = new THREE.SphereGeometry( 1000, window.innerWidth, window.innerHeight);
+            const light = new THREE.AmbientLight( 0x909090); // soft white light
+            scene.add( light );
+
+            geometry = new THREE.CylinderGeometry( 1.2*k, 1*k, 1*k, 1*k);
+            material = new THREE.MeshStandardMaterial( {color: 0x2c7db6, side: THREE.DoubleSide} );
+            waterbox = new THREE.Mesh( geometry, material );
+            waterbox.translateY(-0.5*k);
+            scene.add( waterbox);
+
+            geometry = new THREE.SphereGeometry( Math.PI*k, 1*k, 1*k);
             loader = new THREE.TextureLoader();
             material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide, map: loader.load('https://raw.githubusercontent.com/LuckyNate/FullThree/main/images/seascape.png')});
+            skybox = new THREE.Mesh(geometry, material); 
             
-            
-            mesh = new THREE.Mesh( geometry, material );
-            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000);
-            
-            camera.lookAt(mesh.position);
-            camera.position.set (0, -950, 0);
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, Math.PI * 2 * k);
+            camera.lookAt(skybox.position);
+            camera.position.set ( 0, 3, 100);
 
-            scene.add( mesh );
-            
+            skybox.translateY(2.9275*k);
+            scene.add( skybox);
+
             clock = new THREE.Clock();
             window.addEventListener( 'resize', onWindowResize, false );
+            window.addEventListener('wheel', function(){
+                var e = event;
+                e.deltaY < 0 
+                    ? camera.translateY(-4)
+                    : camera.translateY(+4);
+            }, false);
 
         }
 
         function animate() {
             requestAnimationFrame( animate );
-            
             var delta =  clock.getDelta();
-
+    
             camera.rotation.y += delta * 0.1;
-            
-            mesh.position.x += 0;
-            if (mesh.position.x > 2) {
-                dir=-1;
-            } else if (mesh.position.x < - 2)  {
-                dir=1;
-            }
+       
             renderer.render( scene, camera );
         }
 
