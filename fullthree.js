@@ -1,19 +1,3 @@
-To make the player gaze follow the mouse, you can add event listeners to track the mouse position and use that information to update the target position that the player and camera are looking at.
-
-document.addEventListener('mousemove', onDocumentMouseMove, false);
-
-function onDocumentMouseMove(event) {
-    event.preventDefault();
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    
-    target.position.set(mouseX * 10, mouseY * 10, 10);
-    camera.lookAt(target.position);
-    player.lookAt(target.position);
-}
-
-
-
 /*fullthree.js - worldbuilding with three.js and .obj filetype*/
 
 const k = 1000;
@@ -77,6 +61,18 @@ const k = 1000;
 
             window.addEventListener( 'resize', onWindowResize, false );
 
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+            function onDocumentMouseMove(event) {
+                event.preventDefault();
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                
+                target.position.set(mouseX * 10, mouseY * 10, 10);
+                camera.lookAt(target.position);
+                player.lookAt(target.position);
+            }
+
             window.addEventListener('wheel', function(){
                 var e = event;
                 if(e.deltaY < 0){
@@ -93,13 +89,20 @@ const k = 1000;
             }, false);
 
         }
-
+        
+        
         function animate() {
-            requestAnimationFrame( animate );
-            var delta =  clock.getDelta();
-   
-            renderer.render( scene, camera );
-        }
+            requestAnimationFrame(animate);
+            var delta = clock.getDelta();
+            var playerPosition = player.position.clone();
+            var targetPosition = target.position.clone();
+            var eyeTarget = playerPosition.lerp(targetPosition, 0.5);
+          
+            camera.position.lerp(eyeTarget.clone().sub(new THREE.Vector3(0, 0, 1)), 0.1);
+            camera.lookAt(eyeTarget);
+          
+            renderer.render(scene, camera);
+          }
 
         function onWindowResize() {
 
