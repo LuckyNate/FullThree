@@ -22,7 +22,7 @@ const k = 1000;
             scene.add( light );
 
             //Add Bounds of the map
-            geometry = new THREE.SphereGeometry( Math.PI*k, 1*k, 1*k);
+            geometry = new THREE.SphereGeometry( Math.PI*k, k, k);
             loader = new THREE.TextureLoader();
             material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide, map: loader.load('https://raw.githubusercontent.com/LuckyNate/FullThree/main/images/seascape.png')});
             skybox = new THREE.Mesh(geometry, material);
