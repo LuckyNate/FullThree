@@ -1,3 +1,19 @@
+To make the player gaze follow the mouse, you can add event listeners to track the mouse position and use that information to update the target position that the player and camera are looking at.
+
+document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+function onDocumentMouseMove(event) {
+    event.preventDefault();
+    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    
+    target.position.set(mouseX * 10, mouseY * 10, 10);
+    camera.lookAt(target.position);
+    player.lookAt(target.position);
+}
+
+
+
 /*fullthree.js - worldbuilding with three.js and .obj filetype*/
 
 const k = 1000;
